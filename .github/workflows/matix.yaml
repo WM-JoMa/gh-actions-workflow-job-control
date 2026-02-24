@@ -1,4 +1,4 @@
-name: Matrix name
+name: Matrix workflow
 on: push
 jobs:
   build:
