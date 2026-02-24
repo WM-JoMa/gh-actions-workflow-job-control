@@ -7,10 +7,20 @@ on:
         required: true
         type: string
         default: dist
+    outputs:
+      deploy-success:
+        description: Flag to indicate if the deploy was success
+        value: ${{ jobs.deploy.outputs.success-flag }}
+    # secrets:
+    #   some-secret:
+    #     description: The important secret needed
+    #     required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs: 
+      success-flag: ${{ steps.return-flag.outputs.deploy-success }}
     steps:
       - name: Get code artifact
         uses: actions/download-artifact@v6
@@ -20,3 +30,6 @@ jobs:
         run: ls
       - name: Ouput information
         run: echo "Deploying and uploading..."
+      - name: Set result output
+        id: return-flag
+        run: echo "deploy-success=true" >> $GITHUB_OUTPUT
